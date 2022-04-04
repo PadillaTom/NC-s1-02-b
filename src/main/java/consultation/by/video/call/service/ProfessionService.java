@@ -1,5 +1,6 @@
 package consultation.by.video.call.service;
 
+import consultation.by.video.call.model.entity.Profession;
 import consultation.by.video.call.model.request.ProfessionRequest;
 import consultation.by.video.call.model.response.ProfessionResponse;
 
@@ -14,4 +15,6 @@ public interface ProfessionService {
     void updateProfession(Long id, ProfessionRequest request);
 
     void deleteProfession(Long id);
+
+    Profession getProfession(Long professionId);
 }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +48,16 @@ public class ProfessionServiceImpl implements ProfessionService {
     public void deleteProfession(Long id) {
         var foundProfession = professionRepository.findById(id).orElseThrow();
         professionRepository.delete(foundProfession);
+    }
+
+    @Override
+    public Profession getProfession(Long professionId) {
+        Optional<Profession> profession = professionRepository.findById(professionId);
+            if(profession.isEmpty() || profession.get().isDeleted()){
+                throw new RuntimeException("La profession que busca no esta cargada.");
+            }
+
+        return profession.get();
     }
 
 

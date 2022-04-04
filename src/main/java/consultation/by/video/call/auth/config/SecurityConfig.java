@@ -1,5 +1,6 @@
 package consultation.by.video.call.auth.config;
 
+import consultation.by.video.call.auth.entity.ListRole;
 import consultation.by.video.call.auth.filter.JwtRequestFilters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -78,6 +79,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/profession").permitAll()
                 .antMatchers(HttpMethod.PUT,"/profession/{id}").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/profession/{id}").permitAll()
+                .antMatchers(HttpMethod.POST,"/professional/register").permitAll()
+                .antMatchers(HttpMethod.POST,"/professional/login").permitAll()
+                .antMatchers(HttpMethod.GET,"/professional/all").permitAll()
+                .antMatchers(HttpMethod.GET,"/professional/{idProfessional}").permitAll()
+                .antMatchers(HttpMethod.GET,"/professional").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/professional/{id}").permitAll()
                 .antMatchers(publicEndpoint).permitAll()
                 .anyRequest().authenticated()
                 .and()

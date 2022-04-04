@@ -20,6 +20,7 @@ public class Profession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "profession_id")
     private Long id;
     @NotEmpty(message = "Poneme un Titulo amigo!")
     private String title;
@@ -27,8 +28,8 @@ public class Profession {
     @Column
     private String description;
     private String imageUrl;
-    private boolean deleted;
+    private boolean deleted = Boolean.FALSE;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "professions")
-    List<Professional> professionals = new ArrayList<>();
+    //@ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "professions")
+   // List<Professional> professionals = new ArrayList<>();
 }

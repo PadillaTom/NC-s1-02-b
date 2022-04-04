@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProfessionalRepository extends JpaRepository<Professional, Long> {
+    Professional findByEmail(String email);
+
 }

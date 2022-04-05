@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowSemicolon(true);
         firewall.setAllowBackSlash(true);
+        firewall.setAllowUrlEncodedDoubleSlash(true);
         return firewall;
     }
 

@@ -1,5 +1,7 @@
 package consultation.by.video.call.auth.response;
 
+import consultation.by.video.call.model.entity.Role;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +26,6 @@ public class UserResponse {
     private String country;
     private String province;
     private String city;
+    private List<Role> roles;
 
 }

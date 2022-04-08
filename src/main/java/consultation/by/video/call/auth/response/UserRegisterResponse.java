@@ -1,6 +1,7 @@
 package consultation.by.video.call.auth.response;
 
 
+import consultation.by.video.call.model.entity.Role;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class UserRegisterResponse {
     private String token;
     private String firstName;
     private String lastName;
-    private RoleResponse roles;
+    private List<Role> roles;
    
 
 

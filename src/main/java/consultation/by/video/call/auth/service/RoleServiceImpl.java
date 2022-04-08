@@ -3,10 +3,9 @@ package consultation.by.video.call.auth.service;
 import consultation.by.video.call.model.entity.Role;
 import consultation.by.video.call.auth.repository.IRoleRepository;
 import consultation.by.video.call.auth.service.abstraction.IRoleService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements IRoleService {
@@ -20,12 +19,11 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public Role getRol(Long idRol) {
-        Optional<Role> role = roleRepository.findById(idRol);
-        if(role.isEmpty()){
-            throw new RuntimeException("Rol no encontrado");
-        }
-        return role.get();
+    public Role findById(Long id) {
+       return roleRepository.getById(id);    }
 
+    @Override
+    public List<Role> findAll() {
+        return roleRepository.findAll();
     }
 }

@@ -48,20 +48,13 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             throw new RuntimeException("El email ya se encuentra registrado.");
         }
         Professional professional = professionalMapper.toEntity(request, file);
-        Role role = roleService.getRol(request.getIdRol());
         List<Role> roles = new ArrayList<>();
-            if(role.getId() != 3){
-                throw new RuntimeException("Debe ingresar el numero 3 para registrar un professional. ");
-            }
-            else {
-                roles.add(roleService.findBy(ListRole.PROFESSIONAL.getFullRoleName()));
-                professional.setRoles(roles);
-                Professional saved = professionalRepository.save(professional);
-                ProfessionalResponse response = professionalMapper.toDto(saved);
-                response.setToken(jwtUtil.generateToken(saved));
-
-                return response;
-            }
+        roles.add(roleService.findBy(ListRole.PROFESSIONAL.getFullRoleName()));
+        professional.setRoles(roles);
+        Professional saved = professionalRepository.save(professional);
+        ProfessionalResponse response = professionalMapper.toDto(saved);
+        response.setToken(jwtUtil.generateToken(saved));
+        return response;
     }
 
     @Override
@@ -96,9 +89,9 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                if(p.getEmail().equals(filtersDto.getEmail()) || p.getFirstName().equals(filtersDto.getFirst_name()) ||
                p.getLastName().equals(filtersDto.getLast_name()) || p.getDni().equals(filtersDto.getDni())){
                    response.add(professionalMapper.professionalEntityBasicDto(p));
-
                }
            }
+
         return response;
     }
 
@@ -107,6 +100,13 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         Professional p = getProfessional(id);
         p.setDeleted(true);
         professionalRepository.save(p);
+    }
+
+    @Override
+    public ProfessionalListResponse getById(Long id) {
+        Professional professional = getProfessional(id);
+        ProfessionalListResponse response = professionalMapper.professionalEntityBasicDto(professional);
+        return response;
     }
 
     private Professional getProfessional(Long id){

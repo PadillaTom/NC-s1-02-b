@@ -5,8 +5,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -20,16 +18,13 @@ public class Profession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "profession_id")
     private Long id;
-    @NotEmpty(message = "Poneme un Titulo amigo!")
+
+    @NotEmpty(message = "you must enter a title")
     private String title;
-    @Lob
-    @Column
+    @Lob   
     private String description;
     private String imageUrl;
-    private boolean deleted = Boolean.FALSE;
+    private boolean deleted;
 
-    //@ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "professions")
-   // List<Professional> professionals = new ArrayList<>();
 }

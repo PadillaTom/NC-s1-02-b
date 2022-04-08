@@ -1,6 +1,7 @@
 package consultation.by.video.call.auth.service;
 
 
+import consultation.by.video.call.model.entity.Patient;
 import consultation.by.video.call.model.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -49,6 +50,10 @@ public class JwtUtil {
         return extractExpiration(getToken(authorizationHeader)).before(new Date());
     }
 
+     public String generateTokenPatient(UserDetails userDetails) {
+        Patient user = (Patient) userDetails; 
+        return createToken(user.getUsername(),user.getEmail());
+    }
     public String generateToken(UserDetails userDetails) {
         User user = (User) userDetails;     
         return createToken(user.getUsername(), user.getRoles().get(0).toString());

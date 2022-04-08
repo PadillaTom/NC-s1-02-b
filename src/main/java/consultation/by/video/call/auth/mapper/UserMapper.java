@@ -2,24 +2,28 @@ package consultation.by.video.call.auth.mapper;
 
 import consultation.by.video.call.model.entity.User;
 import consultation.by.video.call.auth.request.UserRegisterRequest;
-import consultation.by.video.call.auth.response.RoleResponse;
+import consultation.by.video.call.auth.request.UserRequest;
 import consultation.by.video.call.auth.response.UserRegisterResponse;
 import consultation.by.video.call.auth.response.UserResponse;
+import consultation.by.video.call.auth.response.UserRoleResponse;
+import consultation.by.video.call.model.entity.Patient;
+import consultation.by.video.call.service.FirebaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class UserMapper {
 
-
-
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private FirebaseService service;
 
-
-    public User userDto2Entity(UserRegisterRequest request) {
-        User user = new User();
+    public Patient userDto2Entity(UserRegisterRequest request, MultipartFile[] file) {
+        Patient user = new Patient();
+        String imageUrl = service.subirImagen(file);
         user.setEmail(request.getEmail());
         user.setAge(request.getAge());
         user.setCity(request.getCity());
@@ -27,52 +31,41 @@ public class UserMapper {
         user.setDni(request.getDni());
         user.setFirstName(request.getFirst_name());
         user.setLastName(request.getLast_name());
-        user.setImageUrl(null);
+        user.setImageUrl(imageUrl);
         user.setProvince(request.getProvince());
         user.setRoles(null);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         return user;        
     }
 
-    public UserRegisterResponse userEntity2Dto(User user) {
+    public UserRegisterResponse userEntity2Dto(Patient user) {
         UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
         userRegisterResponse.setId(user.getId());
         userRegisterResponse.setFirstName(user.getFirstName());
         userRegisterResponse.setLastName(user.getLastName());
         userRegisterResponse.setEmail(user.getEmail());
-        userRegisterResponse.setRoles(new RoleResponse(user.getRoles().get(0).getId(), user.getRoles().get(0).getName()));
+        userRegisterResponse.setRoles(user.getRoles());
        
         return userRegisterResponse;
     }
 //
-//    public void clientEntityRefreshValues(Client client, UserRegisterRequest request) {
-//        client.setUsername(request.getUsername());
-//        client.setEmail(request.getEmail());
-//
-//        client.setPassword(passwordEncoder.encode(request.getPassword()));
-//        client.setName(request.getName());
-//        client.setSurname(request.getSurname());
-//        client.setCity(request.getCity());
-//        client.setCountry(request.getCountry());
-//        client.setState(request.getState());
-//        ImageProfile imageProfile = fileUploadService.uploadImageProfileToDB(request.getImageProfile());
-//        client.setImageProfile(imageProfile);
-//
-//    }
-//
-//    public UserUpdateResponse userEntity2DtoRefresh(Client entity) {
-//       UserUpdateResponse dto = new UserUpdateResponse();
-//        dto.setUsername(entity.getUsername());
-//        dto.setEmail(entity.getEmail());
-//        dto.setName(entity.getName());
-//        dto.setSurname(entity.getSurname());
-//        dto.setCity(entity.getCity());
-//        dto.setCountry(entity.getCountry());
-//        dto.setState(entity.getState());
-//        dto.setImageProfile(entity.getImageProfile());
-//        return dto;
-//    }
-//
+    public User userDtoEntity(User entity, UserRequest request) {
+        entity.setAge(request.getAge());
+        entity.setEmail(request.getEmail());
+        entity.setAge(request.getAge());
+        entity.setCity(request.getCity());
+        entity.setCountry(request.getCountry());
+        entity.setDni(request.getDni());
+        entity.setFirstName(request.getFirst_name());
+        entity.setLastName(request.getLast_name());
+        entity.setImageUrl(request.getImage_url());
+        entity.setProvince(request.getProvince());      
+        entity.setPassword(passwordEncoder.encode(request.getPassword()));
+        return entity;
+
+    }
+    
+    
     public UserResponse convertTo(User userInstance) {
         UserResponse userResponse = new UserResponse();
         userResponse.setId(userInstance.getId());
@@ -87,6 +80,17 @@ public class UserMapper {
         userResponse.setPassword(userInstance.getPassword());
         userResponse.setImage_url(userInstance.getImageUrl());
         userResponse.setProvince(userInstance.getProvince());
+        userResponse.setRoles(userInstance.getRoles());
         return userResponse;
     }
+    
+    public UserRoleResponse convertToUserRole(User user) {
+        UserRoleResponse userResponse = new UserRoleResponse();
+        userResponse.setId(user.getId());
+        userResponse.setFirt_name(user.getFirstName());
+      //  userResponse.setRoles(user.getRoles());
+        return userResponse;
+    }
+    
+    
 }

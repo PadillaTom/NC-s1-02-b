@@ -1,6 +1,5 @@
 package consultation.by.video.call.auth.config;
 
-import consultation.by.video.call.auth.entity.ListRole;
 import consultation.by.video.call.auth.filter.JwtRequestFilters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @EnableWebSecurity
 @Configuration
@@ -36,22 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
-        StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowSemicolon(true);
-        firewall.setAllowBackSlash(true);
-        firewall.setAllowUrlEncodedDoubleSlash(true);
-        return firewall;
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
-
     }
 
     @Autowired
@@ -74,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/docs/swagger-ui",
             "/swagger-ui.html",
             "/**/swagger-ui/**",
-            "/swagger-ui"
+            "/swagger-ui"            
     };
 
     @Override
@@ -92,7 +72,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/user/{id}").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/user/{id}").permitAll() //hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.GET,"/user/me").permitAll()
-                .antMatchers(HttpMethod.GET,"/user/all").permitAll()
+
+                .antMatchers(HttpMethod.PUT,"/user/{id}").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/roles/{id}").permitAll()
+                .antMatchers("https://s1-02-t-preview.netlify.app/").permitAll()
+                .antMatchers(publicEndpoint).permitAll()                 
                 .antMatchers(HttpMethod.POST,"/firebase/uploadImage").permitAll()
                 .antMatchers(HttpMethod.POST,"/profession").permitAll()
                 .antMatchers(HttpMethod.GET,"/profession").permitAll()
@@ -104,6 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/professional/{idProfessional}").permitAll()
                 .antMatchers(HttpMethod.GET,"/professional").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/professional/{id}").permitAll()
+                .antMatchers(HttpMethod.GET,"/professional/professional/{id}").permitAll()
                 .antMatchers(publicEndpoint).permitAll()
                 .anyRequest().authenticated()
                 .and()

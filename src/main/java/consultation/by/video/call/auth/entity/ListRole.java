@@ -4,7 +4,8 @@ public enum ListRole {
 
     USER("USER"),
     ADMIN("ADMIN"),
-    PROFESSIONAL("PROFESSIONAL");
+    PROFESSIONAL("PROFESSIONAL"),
+    PATIENT("PATIENT");
 
     private static final String ROLE_PREFIX = "ROLE_";
     private final String name;

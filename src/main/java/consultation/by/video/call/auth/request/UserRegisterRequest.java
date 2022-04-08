@@ -1,6 +1,9 @@
 package consultation.by.video.call.auth.request;
 
 
+import consultation.by.video.call.model.entity.Role;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +39,7 @@ public class UserRegisterRequest {
     private String country;
     private String province;
     private String city;
+    private List<Role> roles=new ArrayList<>();
 
 
 }

@@ -9,12 +9,18 @@ import consultation.by.video.call.auth.service.abstraction.IUserService;
 import consultation.by.video.call.auth.service.abstraction.IRegisterUserService;
 import consultation.by.video.call.auth.mapper.UserMapper;
 import consultation.by.video.call.auth.repository.IUserRepository;
+import consultation.by.video.call.auth.request.RolesRequest;
 import consultation.by.video.call.auth.request.UserAuthenticatedRequest;
 import consultation.by.video.call.auth.request.UserRegisterRequest;
+import consultation.by.video.call.auth.request.UserRequest;
+import consultation.by.video.call.auth.response.RoleResponse;
 import consultation.by.video.call.auth.response.UserAuthenticatedResponse;
 import consultation.by.video.call.auth.response.UserRegisterResponse;
 import consultation.by.video.call.auth.response.UserResponse;
+import consultation.by.video.call.auth.response.UserRoleResponse;
 import consultation.by.video.call.auth.service.abstraction.IRoleService;
+import consultation.by.video.call.exception.ParamNotFound;
+import consultation.by.video.call.model.entity.Patient;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserServiceImpl  implements UserDetailsService, IRegisterUserService, IAuthenticationService, IUserService  {
@@ -53,24 +60,22 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Autowired
-//    private IClientRepository clientRepository;
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Override
-    public UserRegisterResponse register(UserRegisterRequest request) {
+    public UserRegisterResponse register(UserRegisterRequest request, MultipartFile[] file) {
         if(userRepository.findByEmail(request.getEmail()) != null){
             throw new RuntimeException(USER_EMAIL_ERROR);
         }
-        User user = userMapper.userDto2Entity(request);  
+        Patient user = (Patient) userMapper.userDto2Entity(request, file);  
         List<Role> roles = new ArrayList<>();
-        roles.add(roleService.findBy(ListRole.USER.getFullRoleName()));
+        //USER-PATIENT
+        roles.add(roleService.findBy(ListRole.PATIENT.getFullRoleName()));
         user.setRoles(roles);         
-        User userCreate = userRepository.save(user);
+        Patient userCreate = userRepository.save(user);
         UserRegisterResponse userRegisterResponse = userMapper.userEntity2Dto(userCreate);
-        userRegisterResponse.setToken(jwtUtil.generateToken( userCreate));
+        userRegisterResponse.setToken(jwtUtil.generateTokenPatient((UserDetails) userCreate));
         return userRegisterResponse;      
     }
 
@@ -98,8 +103,7 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
     @Override
     public UserAuthenticatedResponse authentication(UserAuthenticatedRequest request) {
        
-        User user = getUser(request.getEmail());
-        System.out.println("LLEGO ACA : "+user.getEmail()+" "+user.getRoles());
+        User user = getUser(request.getEmail());       
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));
         return new UserAuthenticatedResponse(jwtUtil.generateToken(user), user.getEmail(), user.getAuthorities());
     }
@@ -109,12 +113,10 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
     public User getInfoUser() throws NotFoundException {
         Object userInstance = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(userInstance instanceof User){
-            String username = ((User) userInstance).getUsername();
-//            System.out.println("EL USSS ES: "+ ((User) userInstance).getUsername());
+            String username = ((User) userInstance).getUsername();//            
         }else{
             String username = userInstance.toString();
-//            System.out.println("ERROR NO USUARIO ISNTANCIADO:"+ ((User) userInstance).getUsername() );
-        }
+      }
         System.out.println("EL USSS ES: "+ userInstance.toString());
         return userRepository.findByEmail(userInstance.toString());
     }
@@ -127,19 +129,33 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
         userRepository.save(user);
     }
 
-//    @Override
-//    public UserUpdateResponse update(Long id, UserRegisterRequest request) throws NotFoundException {
-//        Optional<User> entity = userRepository.findById(id);
-//        if(!entity.isPresent()){
-//            throw new ParamNotFound("error: id de Usuario no es valido");
-//        }
-//        userMapper.clientEntityRefreshValues(entity.get(), request);
-//
-//        Client entitySaved = clientRepository.save(entity.get());
-//        UserUpdateResponse result = userMapper.userEntity2DtoRefresh(entitySaved);
-//        return result;
-//    }
+    @Override
+    public UserResponse update(Long id, UserRequest request) throws NotFoundException {
+        Optional<User> entity = userRepository.findById(id);
+        if(!entity.isPresent()){
+            throw new ParamNotFound("error: id Username is not valido");
+        }       
+        User entitySaved = userRepository.save(userMapper.userDtoEntity(entity.get(), request));
+        return userMapper.convertTo(entitySaved);
+    }
 
+    
+    @Override
+    public UserRoleResponse updateRoles(Long id, List<Role> roleNames){
+          Optional<User> entity = userRepository.findById(id);        
+          if(!entity.isPresent()){
+            throw new ParamNotFound("error: id Username is not valido");
+          }          
+        List<Role> rolesNew = new ArrayList<>();   
+        for (Role role :roleNames){       
+             rolesNew.add(roleService.findById(role.getId()));           
+        }
+           entity.get().setRoles(rolesNew);                    
+          return userMapper.convertToUserRole(userRepository.save(entity.get()));
+    }
+    
+    
+    
     @Override
     public UserResponse getById(Long id) {
         User user= getUser(id);

@@ -75,4 +75,11 @@ public class ProfessionalController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/professional/{id}")
+    public ResponseEntity<ProfessionalListResponse> getById(@PathVariable Long id){
+        ProfessionalListResponse response = service.getById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
 }

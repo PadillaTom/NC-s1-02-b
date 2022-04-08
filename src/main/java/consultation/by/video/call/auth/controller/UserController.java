@@ -1,9 +1,13 @@
 package consultation.by.video.call.auth.controller;
 
+import consultation.by.video.call.auth.request.RolesRequest;
+import consultation.by.video.call.auth.request.UserRequest;
 import consultation.by.video.call.model.entity.User;
 import consultation.by.video.call.auth.service.abstraction.IUserService;
+import consultation.by.video.call.model.entity.Role;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -44,6 +52,18 @@ public class UserController {
     @ApiOperation(value = "Get all users", notes = "Return list users")
     public ResponseEntity<?> getAllUser() {     
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser());
+    }
+    @PutMapping("/{id}")
+    @ApiOperation(value = "Update user", notes = "Return a user updated" )
+    public ResponseEntity<?> update(@PathVariable Long id, 
+            @RequestPart(value = "user", required = true) UserRequest request) throws NotFoundException {            
+        return ResponseEntity.ok().body(userService.update(id, request));
+    }
+    @PostMapping("rolesuser/{id}")
+    @ApiOperation(value = "Update role user", notes = "Return a rol user updated" )
+    public ResponseEntity<?> updateRoles(@PathVariable Long id, 
+            @RequestBody List<Role> roleName) throws NotFoundException { 
+        return ResponseEntity.ok().body(userService.updateRoles(id, roleName));
     }
     
    

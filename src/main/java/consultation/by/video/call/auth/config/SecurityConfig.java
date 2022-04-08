@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @EnableWebSecurity
 @Configuration
@@ -38,6 +41,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder managerBuilder) throws Exception {
         managerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+
+    //    === To Prevent Malicious String ===
+    @Bean
+    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowSemicolon(true);
+        firewall.setAllowBackSlash(true);
+        firewall.setAllowUrlEncodedDoubleSlash(true);
+        return firewall;
+    }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        super.configure(web);
+        web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
+    }
+//    === End ===
 
     @Override
     @Bean

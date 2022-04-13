@@ -1,6 +1,6 @@
 package consultation.by.video.call.service;
 
-import consultation.by.video.call.model.entity.Professional;
+
 import consultation.by.video.call.model.request.ProfessionalAuthenticatedRequest;
 import consultation.by.video.call.model.request.ProfessionalRequest;
 import consultation.by.video.call.model.response.ProfessionalAuthenticatedResponse;
@@ -18,7 +18,7 @@ public interface ProfessionalService {
 
     List<ProfessionalListResponse> getAllProfessionals();
 
-    List<ProfessionalListResponse> getProfessionalByProfessionalId(Long professionId);
+    List<ProfessionalListResponse> getProfessionalByProfessionId(Long professionId);
 
     List<ProfessionalListResponse> getByFilters(String email, String first_name, String last_name, String dni);
 

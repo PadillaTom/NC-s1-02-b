@@ -29,7 +29,7 @@ public class Professional extends User {
     private List<Patient> patients = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "profession_id", insertable = true, updatable = true)
+    @JoinColumn(name = "profession_id",insertable = true)
     private Profession professions;
 
     @OneToOne (mappedBy = "professional", cascade = CascadeType.ALL)

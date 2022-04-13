@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,12 +60,22 @@ public class UserController {
             @RequestPart(value = "user", required = true) UserRequest request) throws NotFoundException {            
         return ResponseEntity.ok().body(userService.update(id, request));
     }
-    @PostMapping("rolesuser/{id}")
+    @PostMapping("/rolesuser/{id}")
     @ApiOperation(value = "Update role user", notes = "Return a rol user updated" )
     public ResponseEntity<?> updateRoles(@PathVariable Long id, 
             @RequestBody List<Role> roleName) throws NotFoundException { 
         return ResponseEntity.ok().body(userService.updateRoles(id, roleName));
     }
     
-   
+   @GetMapping("/filter")
+    public ResponseEntity<?> getDetailByFilters(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String first_name,
+            @RequestParam(required = false) String last_name,
+            @RequestParam(required = false) String dni
+
+    ){         
+        return ResponseEntity.ok().body( userService.getByFilters(email,first_name,last_name,dni));
+    }
+    
 }

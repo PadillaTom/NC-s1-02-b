@@ -1,15 +1,16 @@
 package consultation.by.video.call.model.entity;
 
+import consultation.by.video.call.model.enums.EnumState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import lombok.Builder;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,15 +18,17 @@ import java.time.LocalTime;
 @Where(clause = "deleted = false")
 @Getter
 @Setter
+@Builder
 @Entity
 public class Turn {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate day;
+    private LocalDate day; //date full
     private LocalTime hour;
-    private boolean high;//alta
+    @Enumerated(value = EnumType.STRING)
+    private EnumState high;//alta
     @ManyToOne()
     private Professional professional;
     @ManyToOne()

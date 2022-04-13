@@ -14,8 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -85,9 +87,11 @@ public class ProfessionalMapper {
     public List<ProfessionalListResponse> toDtoListById(List<Professional> professionals, Long professionId) {
         List<ProfessionalListResponse> responses = new ArrayList<>();
         for(Professional p: professionals){
-            if(p.getProfessions().getId() == professionId){
+
+            if(Objects.equals(p.getProfessions().getId(), professionId)){
                 responses.add(professionalEntityBasicDto(p));
             }
+
         }
         return responses;
 

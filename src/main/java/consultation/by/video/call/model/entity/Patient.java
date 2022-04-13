@@ -1,6 +1,7 @@
 
 package consultation.by.video.call.model.entity;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -9,9 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
+@ApiModel("Model Chart")
 @Entity
 public class Patient extends User {
 

@@ -52,11 +52,7 @@ public class ProfessionServiceImpl implements ProfessionService {
 
     @Override
     public Profession getProfession(Long professionId) {
-        Optional<Profession> profession = professionRepository.findById(professionId);
-            if(profession.isEmpty() || profession.get().isDeleted()){
-                throw new RuntimeException("La profession que busca no esta cargada.");
-            }
-
+        Optional<Profession> profession = Optional.of(professionRepository.findById(professionId).orElseThrow());
         return profession.get();
     }
 

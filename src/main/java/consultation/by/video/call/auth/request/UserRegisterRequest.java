@@ -39,7 +39,14 @@ public class UserRegisterRequest {
     private String country;
     private String province;
     private String city;
-    private List<Role> roles=new ArrayList<>();
+    private List<Role> roles=new ArrayList<>();   
 
+    public UserRegisterRequest(String email, String first_name, String last_name, String dni) {
+        this.email = email;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.dni = dni;
+    }
+    
 
 }

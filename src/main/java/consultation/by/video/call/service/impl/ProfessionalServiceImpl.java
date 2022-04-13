@@ -73,7 +73,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     }
 
     @Override
-    public List<ProfessionalListResponse> getProfessionalByProfessionalId(Long professionId) {
+    public List<ProfessionalListResponse> getProfessionalByProfessionId(Long professionId) {
         List<Professional> professionals = professionalRepository.findAll();
         List<ProfessionalListResponse> result = professionalMapper.toDtoListById(professionals, professionId);
         return result;

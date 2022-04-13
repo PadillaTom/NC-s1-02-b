@@ -1,5 +1,6 @@
 package consultation.by.video.call.auth.config;
 
+import consultation.by.video.call.auth.entity.ListRole;
 import consultation.by.video.call.auth.filter.JwtRequestFilters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,8 +18,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @EnableWebSecurity
 @Configuration
@@ -41,22 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder managerBuilder) throws Exception {
         managerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-
-    //    === To Prevent Malicious String ===
-    @Bean
-    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
-        StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowSemicolon(true);
-        firewall.setAllowBackSlash(true);
-        firewall.setAllowUrlEncodedDoubleSlash(true);
-        return firewall;
-    }
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
-    }
-//    === End ===
 
     @Override
     @Bean
@@ -91,11 +73,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/user/{id}").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/user/{id}").permitAll() //hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.GET,"/user/me").permitAll()
-
-                .antMatchers(HttpMethod.PUT,"/user/{id}").permitAll()
+                .antMatchers(HttpMethod.GET,"/user/me").permitAll()
+                .antMatchers(HttpMethod.GET,"/user/filter").permitAll()
                 .antMatchers(HttpMethod.POST,"/user/roles/{id}").permitAll()
                 .antMatchers("https://s1-02-t-preview.netlify.app/").permitAll()
-                .antMatchers(publicEndpoint).permitAll()                 
+                .antMatchers(HttpMethod.POST,"/patient/api/v1/turn_patient").permitAll()                
+                .antMatchers(HttpMethod.GET,"/patient/api/v1/patients").permitAll()
+                .antMatchers(HttpMethod.GET,"/turn/api/v1/").permitAll()
+                .antMatchers(HttpMethod.GET,"/turn/api/v1/turns/high").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/v1/turn/{id}").permitAll()
+                
                 .antMatchers(HttpMethod.POST,"/firebase/uploadImage").permitAll()
                 .antMatchers(HttpMethod.POST,"/profession").permitAll()
                 .antMatchers(HttpMethod.GET,"/profession").permitAll()
@@ -104,10 +91,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/professional/register").permitAll()
                 .antMatchers(HttpMethod.POST,"/professional/login").permitAll()
                 .antMatchers(HttpMethod.GET,"/professional/all").permitAll()
-                .antMatchers(HttpMethod.GET,"/professional/{idProfessional}").permitAll()
+                .antMatchers(HttpMethod.GET,"/professional/{idProfession}").permitAll()
                 .antMatchers(HttpMethod.GET,"/professional").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/professional/{id}").permitAll()
                 .antMatchers(HttpMethod.GET,"/professional/professional/{id}").permitAll()
+                .antMatchers(HttpMethod.POST,"/news").permitAll()
+                .antMatchers(HttpMethod.GET,"/news/{id}").permitAll()
+                .antMatchers(HttpMethod.GET,"/news/all").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/news/{id}").permitAll()
+                .antMatchers(HttpMethod.PUT,"/news/{id}").permitAll()
                 .antMatchers(publicEndpoint).permitAll()
                 .anyRequest().authenticated()
                 .and()

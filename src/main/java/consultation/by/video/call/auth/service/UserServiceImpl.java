@@ -9,11 +9,10 @@ import consultation.by.video.call.auth.service.abstraction.IUserService;
 import consultation.by.video.call.auth.service.abstraction.IRegisterUserService;
 import consultation.by.video.call.auth.mapper.UserMapper;
 import consultation.by.video.call.auth.repository.IUserRepository;
-import consultation.by.video.call.auth.request.RolesRequest;
 import consultation.by.video.call.auth.request.UserAuthenticatedRequest;
 import consultation.by.video.call.auth.request.UserRegisterRequest;
 import consultation.by.video.call.auth.request.UserRequest;
-import consultation.by.video.call.auth.response.RoleResponse;
+import consultation.by.video.call.auth.response.PatientsReponse;
 import consultation.by.video.call.auth.response.UserAuthenticatedResponse;
 import consultation.by.video.call.auth.response.UserRegisterResponse;
 import consultation.by.video.call.auth.response.UserResponse;
@@ -21,6 +20,7 @@ import consultation.by.video.call.auth.response.UserRoleResponse;
 import consultation.by.video.call.auth.service.abstraction.IRoleService;
 import consultation.by.video.call.exception.ParamNotFound;
 import consultation.by.video.call.model.entity.Patient;
+import consultation.by.video.call.model.mapper.PatientMapper;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,7 +29,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -58,10 +57,9 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
     private UserMapper userMapper;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private PatientMapper mapperPatient;
 
     @Override
     public UserRegisterResponse register(UserRegisterRequest request, MultipartFile[] file) {
@@ -154,6 +152,23 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
           return userMapper.convertToUserRole(userRepository.save(entity.get()));
     }
     
+    @Override
+    public List<UserResponse> getByFilters(String email, String first_name, String last_name, String dni) {
+        UserRegisterRequest filtersDto = new UserRegisterRequest(email,first_name,last_name,dni);
+        
+        List<UserResponse> response = new ArrayList<>();
+        List<User> patients = (List<User>)  userRepository.findAll();        
+           for (User p: patients){
+               if(p.getEmail().equals(filtersDto.getEmail()) ||
+                  p.getFirstName().equals(filtersDto.getFirst_name()) ||
+                  p.getLastName().equals(filtersDto.getLast_name()) || 
+                  p.getDni().equals(filtersDto.getDni())){
+                   
+                   response.add( userMapper.convertTo(p));
+               }
+           }
+        return response;
+    }
     
     
     @Override

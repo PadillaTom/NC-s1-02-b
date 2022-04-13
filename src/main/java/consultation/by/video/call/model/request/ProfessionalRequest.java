@@ -39,6 +39,7 @@ public class ProfessionalRequest {
     private String enrollment;
     @NotNull(message = "Ingrese un precio de consulta")
     private double consultationPrice;
+
     private Long professionId;
     private MultipartFile file;
 }

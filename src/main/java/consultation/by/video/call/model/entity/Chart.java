@@ -2,10 +2,14 @@
 package consultation.by.video.call.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import consultation.by.video.call.model.enums.EnumState;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,4 +62,8 @@ public class Chart {
     @OneToOne
     @JoinColumn(name = "fk_professional", updatable = false, nullable = false)
     private Professional professional;
+    
+    @Enumerated(value = EnumType.STRING)
+    @ApiModelProperty(value = "the chart state", required = true)
+    private EnumState enumState;
 }

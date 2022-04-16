@@ -1,8 +1,8 @@
 package consultation.by.video.call.service.impl;
 
-import consultation.by.video.call.auth.entity.ListRole;
-import consultation.by.video.call.auth.service.JwtUtil;
-import consultation.by.video.call.auth.service.abstraction.IRoleService;
+import consultation.by.video.call.model.enums.ListRole;
+import consultation.by.video.call.filter.JwtUtil;
+import consultation.by.video.call.service.IRoleService;
 import consultation.by.video.call.model.entity.Professional;
 import consultation.by.video.call.model.entity.Role;
 import consultation.by.video.call.model.mapper.ProfessionalMapper;

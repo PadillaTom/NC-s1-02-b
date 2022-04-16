@@ -1,5 +1,6 @@
 package consultation.by.video.call.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import consultation.by.video.call.model.entity.Profession;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class ProfessionalListResponse {
     private String city;
     private String enrollment;
     private double consultationPrice;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Profession profession;
 
 }

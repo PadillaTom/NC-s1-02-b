@@ -1,24 +1,21 @@
 package consultation.by.video.call.controller;
 
 
-import consultation.by.video.call.auth.response.PatientsReponse;
 import consultation.by.video.call.model.request.PatientTurnRequest;
+import consultation.by.video.call.model.response.PatientResponseById;
 import consultation.by.video.call.model.response.PatientTurnResponse;
+import consultation.by.video.call.model.response.PatientsReponse;
 import consultation.by.video.call.service.PatientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
@@ -44,6 +41,14 @@ public class PatientController {
     public List<PatientsReponse> getAllPatients() {
         return patientService.getPatients();
     }
-    
+
+    //TODO devuelve un paciente por id con sus turnos
+    @GetMapping("/{id}")
+    @ApiOperation(value = "get patient by id", notes = "returns a patient by id with their shifts")
+    public ResponseEntity<PatientResponseById> getPatientById(@PathVariable Long id){
+        PatientResponseById response = patientService.getPatientById(id);
+        return ResponseEntity.ok().body(response);
+    }
+
 
 }

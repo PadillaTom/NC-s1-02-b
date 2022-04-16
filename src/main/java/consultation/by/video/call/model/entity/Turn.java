@@ -29,9 +29,9 @@ public class Turn {
     private LocalTime hour;
     @Enumerated(value = EnumType.STRING)
     private EnumState high;//alta
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     private Professional professional;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     private Patient patient;
     private boolean deleted;
 }

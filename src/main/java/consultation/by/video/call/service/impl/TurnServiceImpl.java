@@ -1,6 +1,6 @@
 package consultation.by.video.call.service.impl;
 
-import consultation.by.video.call.auth.repository.IUserRepository;
+import consultation.by.video.call.repository.IUserRepository;
 import consultation.by.video.call.exception.ParamNotFound;
 import consultation.by.video.call.model.entity.Turn;
 import consultation.by.video.call.model.enums.EnumState;

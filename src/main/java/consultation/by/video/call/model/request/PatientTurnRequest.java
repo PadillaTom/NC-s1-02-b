@@ -27,7 +27,6 @@ public class PatientTurnRequest {
     private Enum status=EnumState.ACTIVED;
     private double consultationPrice; 
     private Professional professional;
-   
-    
-  
+
+
 }

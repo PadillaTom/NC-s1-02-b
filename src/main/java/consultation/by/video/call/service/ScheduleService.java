@@ -1,10 +1,9 @@
 package consultation.by.video.call.service;
 
-import consultation.by.video.call.model.entity.Patient;
-import consultation.by.video.call.model.request.PatientTurnRequest;
-import consultation.by.video.call.model.response.PatientTurnResponse;
+import consultation.by.video.call.model.request.ScheduleRequest;
+import consultation.by.video.call.model.response.ScheduleResponse;
 
 public interface  ScheduleService {
-   Patient getSchedules(Long Id);
-   PatientTurnResponse saveSchedule(PatientTurnRequest request);
+   ScheduleResponse save(ScheduleRequest request);
+
 }

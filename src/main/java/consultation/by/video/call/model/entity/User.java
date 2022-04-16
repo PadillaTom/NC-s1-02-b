@@ -2,6 +2,7 @@ package consultation.by.video.call.model.entity;
 
 
 import consultation.by.video.call.model.entity.Person;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +29,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User extends Person implements UserDetails {
+public class User extends Person implements UserDetails,  Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -27,7 +27,7 @@ public class Patient extends User {
     inverseJoinColumns = {@JoinColumn(name = "idProfessional")})
     private List<Professional> professionals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL)
     List<Turn> turnList = new ArrayList<>();
     
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)

@@ -112,6 +112,7 @@ public class ProfessionalMapper {
         response.setImage_url(p.getImageUrl());
         response.setProvince(p.getProvince());
         response.setLast_name(p.getLastName());
+        response.setProfession(p.getProfessions());
         return  response;
     }
 }

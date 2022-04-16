@@ -8,6 +8,10 @@ import consultation.by.video.call.model.response.PatientTurnResponse;
 import consultation.by.video.call.model.response.TurnsPatientResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @Component
 public class TurnMapper {
    
@@ -32,6 +36,24 @@ public class TurnMapper {
                 .professional_id(turns.getProfessional().getId())
                 .build();
     }
-    
 
+
+    public List<TurnsPatientResponse> turnEntitySet2DtoList(Collection<Turn> turns) {
+        List<TurnsPatientResponse> dtos = new ArrayList<>();
+        for(Turn t: turns){
+            dtos.add(this.turnEntity2DTO(t));
+        }
+        return dtos;
+    }
+
+    private TurnsPatientResponse turnEntity2DTO(Turn t) {
+        TurnsPatientResponse dto = new TurnsPatientResponse();
+        dto.setId(t.getId());
+        dto.setHomework(t.getHour());
+        dto.setDayMonthYear(t.getDay());
+        dto.setPatient(t.getPatient().getId());
+        dto.setProfessional_id(t.getProfessional().getId());
+        dto.setStatus(t.getHigh());
+        return dto;
+    }
 }

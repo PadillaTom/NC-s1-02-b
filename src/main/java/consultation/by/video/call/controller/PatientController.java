@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class PatientController {
     public List<PatientsReponse> getAllPatients() {
         return patientService.getPatients();
     }
-
+    @PreAuthorize("hasRole('ROLE_PROFESSIONAL') OR hasRole('ROLE_ADMIN')")
     //TODO devuelve un paciente por id con sus turnos
     @GetMapping("/{id}")
     @ApiOperation(value = "get patient by id", notes = "returns a patient by id with their shifts")

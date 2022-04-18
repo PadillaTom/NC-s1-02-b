@@ -2,6 +2,8 @@ package consultation.by.video.call.model.response;
 
 import consultation.by.video.call.model.entity.Role;
 import java.util.List;
+
+import consultation.by.video.call.model.entity.Turn;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,10 @@ public class UserResponse {
     private String country;
     private String province;
     private String city;
+    private String enrollment;
+    private double consultationPrice;
     private List<Role> roles;
+    private List<TurnsPatientResponse> turns;
+    private List<ScheduleResponse> schedules;
 
 }

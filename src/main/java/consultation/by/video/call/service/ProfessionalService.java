@@ -1,6 +1,8 @@
 package consultation.by.video.call.service;
 
 
+import consultation.by.video.call.model.entity.Professional;
+import consultation.by.video.call.model.entity.User;
 import consultation.by.video.call.model.request.ProfessionalAuthenticatedRequest;
 import consultation.by.video.call.model.request.ProfessionalRequest;
 import consultation.by.video.call.model.response.ProfessionalAuthenticatedResponse;
@@ -25,4 +27,6 @@ public interface ProfessionalService {
     void deleted(Long id);
 
     ProfessionalListResponse getById(Long id);
+
+
 }

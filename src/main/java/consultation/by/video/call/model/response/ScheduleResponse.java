@@ -1,22 +1,23 @@
 package consultation.by.video.call.model.response;
 
 
+import consultation.by.video.call.model.entity.DaySchedule;
 import consultation.by.video.call.model.entity.Schedule;
 import java.util.List;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ScheduleResponse {
     
     private Long id_professional;
     private String firstName;
     private String lastName;    
-    private List<Schedule> daySchedule;
+    private List<DayScheduleResponse> daySchedule;
         
    //daySchedule
 //    private Long id_dayschedule;

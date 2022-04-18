@@ -44,6 +44,5 @@ public class Patient extends User {
     private String religion;
 
     public void addTurn(Turn t){
-        turnList.add(t);
-    }
+        turnList.add(t);}
 }

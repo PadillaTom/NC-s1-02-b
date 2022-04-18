@@ -1,12 +1,16 @@
 package consultation.by.video.call.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import consultation.by.video.call.filter.JwtRequestFilters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -78,11 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("https://s1-02-t-preview.netlify.app/").permitAll()
                 .antMatchers(HttpMethod.POST,"/patient/api/v1/turn_patient").permitAll()                
                 .antMatchers(HttpMethod.GET,"/patient/api/v1/patients").permitAll()
-                .antMatchers(HttpMethod.GET,"/patient/api/v1/{id}").permitAll()
+                .antMatchers(HttpMethod.GET,"/patient/api/v1/{id}").hasAnyAuthority("ROLE_PROFESSIONAL")
                 .antMatchers(HttpMethod.GET,"/turn/api/v1/").permitAll()
                 .antMatchers(HttpMethod.GET,"/turn/api/v1/turns/high").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1/turn/{id}").permitAll()
-                
                 .antMatchers(HttpMethod.POST,"/firebase/uploadImage").permitAll()
                 .antMatchers(HttpMethod.POST,"/profession").permitAll()
                 .antMatchers(HttpMethod.GET,"/profession").permitAll()
@@ -100,6 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/news/all").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/news/{id}").permitAll()
                 .antMatchers(HttpMethod.PUT,"/news/{id}").permitAll()
+                .antMatchers(HttpMethod.GET,"/professional/me").permitAll()
                 .antMatchers(publicEndpoint).permitAll()
                 .anyRequest().authenticated()
                 .and()

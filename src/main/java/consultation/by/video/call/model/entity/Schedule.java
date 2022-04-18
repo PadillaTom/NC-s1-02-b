@@ -32,7 +32,7 @@ public class Schedule implements Serializable {
     
     @JsonFormat(pattern="HH:mm")
     @NotNull(message = "You must enter a valid hour")
-    @OneToMany ()
+    @OneToMany (mappedBy = "schedule", cascade = CascadeType.ALL)
     private List<DaySchedule> homeWork;// Inicio del horario laboral de cada profesional    
     
    

@@ -3,13 +3,7 @@ package consultation.by.video.call.model.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import consultation.by.video.call.model.enums.EnumState;
 import java.time.LocalTime;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +26,7 @@ public class DaySchedule {
     @Enumerated(value = EnumType.STRING)
     private EnumState status;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "fk_schedule", updatable = false, nullable = false)
     private Schedule schedule;
     

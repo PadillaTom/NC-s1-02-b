@@ -114,8 +114,7 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
             String username = ((User) userInstance).getUsername();//            
         }else{
             String username = userInstance.toString();
-      }
-        System.out.println("EL USSS ES: "+ userInstance.toString());
+      }       
         return userRepository.findByEmail(userInstance.toString());
     }
 
@@ -134,7 +133,7 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
             throw new ParamNotFound("error: id Username is not valido");
         }       
         User entitySaved = userRepository.save(userMapper.userDtoEntity(entity.get(), request));
-        return userMapper.convertTo(entitySaved);
+        return userMapper.convertTo(entitySaved, false,false);
     }
 
     
@@ -164,7 +163,7 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
                   p.getLastName().equals(filtersDto.getLast_name()) || 
                   p.getDni().equals(filtersDto.getDni())){
                    
-                   response.add( userMapper.convertTo(p));
+                   response.add( userMapper.convertTo(p,false,false));
                }
            }
         return response;
@@ -173,7 +172,7 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
     @Override
     public UserResponse getById(Long id) {
         User user= getUser(id);
-        return userMapper.convertTo(user);
+        return userMapper.convertTo(user,true,true);
     }
     
     @Transactional
@@ -189,7 +188,7 @@ public class UserServiceImpl  implements UserDetailsService, IRegisterUserServic
             throw new EntityNotFoundException(USER_LIST_ERROR);
         }
         for (User entity : entities) {
-            listResponse.add(userMapper.convertTo(entity));
+            listResponse.add(userMapper.convertTo(entity, false,false));
         }
         return listResponse;
     }

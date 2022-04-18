@@ -51,13 +51,20 @@ public class JwtUtil {
     }
 
      public String generateTokenPatient(UserDetails userDetails) {
-        Patient user = (Patient) userDetails; 
-        return createToken(user.getUsername(),user.getEmail());
+        Patient user = (Patient) userDetails;    
+        final String authorites=userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+	        .collect(Collectors.joining(","));
+        return createToken(user.getUsername(),authorites);
     }
     public String generateToken(UserDetails userDetails) {
+        final String authorites=userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+	        .collect(Collectors.joining(","));
         User user = (User) userDetails;     
-        return createToken(user.getUsername(), user.getRoles().get(0).toString());
+        return createToken(user.getUsername(), authorites);
     }
+
 
     private String createToken(String subject, String role) {
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils

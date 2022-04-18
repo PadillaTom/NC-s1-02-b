@@ -1,6 +1,9 @@
 package consultation.by.video.call.controller;
 
 
+import com.google.api.gax.rpc.NotFoundException;
+import consultation.by.video.call.model.entity.Professional;
+import consultation.by.video.call.model.entity.User;
 import consultation.by.video.call.model.request.ProfessionalAuthenticatedRequest;
 import consultation.by.video.call.model.request.ProfessionalRequest;
 import consultation.by.video.call.model.response.ProfessionalAuthenticatedResponse;
@@ -80,6 +83,7 @@ public class ProfessionalController {
         ProfessionalListResponse response = service.getById(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
 
 
 }

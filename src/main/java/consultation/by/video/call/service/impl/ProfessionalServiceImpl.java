@@ -1,7 +1,9 @@
 package consultation.by.video.call.service.impl;
 
+
 import consultation.by.video.call.model.enums.ListRole;
 import consultation.by.video.call.filter.JwtUtil;
+import consultation.by.video.call.repository.IUserRepository;
 import consultation.by.video.call.service.IRoleService;
 import consultation.by.video.call.model.entity.Professional;
 import consultation.by.video.call.model.entity.Role;
@@ -41,6 +43,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     private IRoleService roleService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private IUserRepository userRepository;
 
     @Override
     public ProfessionalResponse registerProfessional(ProfessionalRequest request, MultipartFile[] file) {

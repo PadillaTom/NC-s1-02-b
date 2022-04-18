@@ -1,5 +1,6 @@
 package consultation.by.video.call.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import consultation.by.video.call.model.enums.EnumState;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,7 @@ public class Professional extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profession_id",insertable = true)
+
     private Profession professions;
 
     @OneToMany (mappedBy = "professional", cascade = CascadeType.ALL)
